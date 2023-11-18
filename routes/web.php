@@ -31,3 +31,5 @@ Route::get('/callback/{service}','App\Http\Controllers\SocialController@callback
 
 Route::get('/test git hub','App\Http\Controllers\SocialController@callback');
 
+Route::git('/fillable' , 'CrudController@getoffer');
+
