@@ -33,9 +33,16 @@ Route::get('/test git hub','App\Http\Controllers\SocialController@callback');
 
 Route::get('/fillable' , 'App\Http\Controllers\CrudController@getoffer');
 
-Route::group(['prefix'=>'offers'] , function (){
-//    Route::get('store' , 'App\Http\Controllers\CrudController@store');
-    Route::get('create' , 'App\Http\Controllers\CrudController@create');
-    Route::post('store' , 'App\Http\Controllers\CrudController@store')->name('off.store');
+//Route::group(['prefix'=>'offers'] , function (){
+////    Route::get('store' , 'App\Http\Controllers\CrudController@store');
+//    Route::get('create' , 'App\Http\Controllers\CrudController@create');
+//    Route::post('store' , 'App\Http\Controllers\CrudController@store')->name('off.store');
+//});
+
+Route::group(['prefix'=>\Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale() ,'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]] , function (){
+    Route::group(['prefix'=>'offers'] , function (){
+        Route::get('create' , 'App\Http\Controllers\CrudController@create');
+        Route::post('store' , 'App\Http\Controllers\CrudController@store')->name('off.store');
+    });
 
 });
