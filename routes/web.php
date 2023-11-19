@@ -31,5 +31,11 @@ Route::get('/callback/{service}','App\Http\Controllers\SocialController@callback
 
 Route::get('/test git hub','App\Http\Controllers\SocialController@callback');
 
-Route::git('/fillable' , 'CrudController@getoffer');
+Route::get('/fillable' , 'App\Http\Controllers\CrudController@getoffer');
 
+Route::group(['prefix'=>'offers'] , function (){
+//    Route::get('store' , 'App\Http\Controllers\CrudController@store');
+    Route::get('create' , 'App\Http\Controllers\CrudController@create');
+    Route::post('store' , 'App\Http\Controllers\CrudController@store')->name('off.store');
+
+});
