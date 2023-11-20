@@ -43,6 +43,8 @@ Route::group(['prefix'=>\Mcamara\LaravelLocalization\Facades\LaravelLocalization
     Route::group(['prefix'=>'offers'] , function (){
         Route::get('create' , 'App\Http\Controllers\CrudController@create');
         Route::post('store' , 'App\Http\Controllers\CrudController@store')->name('off.store');
+        Route::get('all', 'App\Http\Controllers\CrudController@getAllOffers')->name('offers.all');
+
     });
 
 });

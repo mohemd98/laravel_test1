@@ -22,9 +22,12 @@ class OfferRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=> 'required|max:100',
+            'name_ar'=> 'required|max:100',
+            'name_en'=> 'required|max:100',
             'price'=> 'required|numeric',
-            'details'=> 'required',
+            'details_ar'=> 'required',
+            'details_en'=> 'required',
+
         ];
     }
 

@@ -7,6 +7,7 @@ use App\Models\Offer;
 //use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 
 class CrudController extends Controller
@@ -63,18 +64,32 @@ class CrudController extends Controller
 //    }
 
     public  function store(OfferRequest $re){
-
+//        dd($re->all());
         Offer::create([
-            'name'=> $re->name,
+            'name_ar'=> $re->name_ar,
+            'name_en'=> $re->name_en,
             'price'=> $re->price,
-            'details'=> $re->details,
+            'details_ar'=> $re->details_ar,
+            'details_en'=> $re->details_en,
+
         ]);
         return redirect()->back()->with(['success' => 'good saved']);
     }
 
 
 
+public  function getAllOffers(){
+  $offers =  Offer::select('id' , 'price',
+      'name_'.LaravelLocalization::getCurrentLocale() . ' as name',
+      'details_'.LaravelLocalization::getCurrentLocale() . ' as details',
+  )->get();
 
+
+  return view( 'ofers.all' , compact( 'offers'));
+
+
+
+}
 
 
 
