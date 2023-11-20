@@ -46,8 +46,7 @@ Route::group(['prefix' => \Mcamara\LaravelLocalization\Facades\LaravelLocalizati
 
         Route::get('edit/{offer_id}', 'App\Http\Controllers\CrudController@editOffer');
         Route::post('update/{offer_id}', 'App\Http\Controllers\CrudController@UpdateOffer')->name('offers.update');
-//        Route::get('delete/{offer_id}', 'App\Http\Controllers\CrudController@delete')->name('offers.delete');
-
+        Route::get('delete/{offer_id}', 'App\Http\Controllers\CrudController@delete')->name('offers.delete');
         Route::get('all', 'App\Http\Controllers\CrudController@getAllOffers')->name('offers.all');
 
     });
