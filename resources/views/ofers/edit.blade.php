@@ -33,21 +33,13 @@
                                 {{ Session::get('success') }}
                             </div>
                         @endif
-                        <form method="post" action="{{route('off.store')}}" enctype="multipart/form-data">
+                        <form method="post" action="{{route('offers.update' , $offer-> id)}}">
                             @csrf
-
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">اختر الصوره</label>
-                                <input type="file" name="photo" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                                @error('photo')
-                                <small class="from-text text-danger">{{$message}}</small>
-                                @enderror
-                            </div>
 
 
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">{{__('messages.Offer Name ar')}}</label>
-                                <input type="text" name="name_ar" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                <input type="text" name="name_ar" value="{{$offer-> name_ar}}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                                 @error('name_ar')
                                 <small class="from-text text-danger">{{$message}}</small>
@@ -56,7 +48,7 @@
 
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">{{__('messages.Offer Name en')}}</label>
-                                <input type="text" name="name_en" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                <input type="text" name="name_en" value="{{$offer-> name_en}}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                                 @error('name_en')
                                 <small class="from-text text-danger">{{$message}}</small>
@@ -65,14 +57,14 @@
 
                             <div class="mb-3">
                                 <label for="exampleInputPassword1" class="form-label">{{__('messages.Offer Price')}}</label>
-                                <input type="text"  name="price" class="form-control" id="exampleInputPassword1">
+                                <input type="text"  name="price"   value="{{$offer-> price}}" class="form-control" id="exampleInputPassword1">
                                 @error('price')
                                 <small class="from-text text-danger"> {{$message}} </small>
                                 @enderror                            </div>
 
                             <div class="mb-3">
                                 <label for="exampleInputPassword1" class="form-label">{{__('messages.Offer details ar')}}</label>
-                                <input type="text"  name="details_ar" class="form-control" id="exampleInputPassword1">
+                                <input type="text"  name="details_ar" value="{{$offer-> details_ar}}" class="form-control" id="exampleInputPassword1">
                                 @error('details_ar')
                                 <small class="from-text text-danger">{{$message}}</small>
                                 @enderror
@@ -80,7 +72,7 @@
 
                             <div class="mb-3">
                                 <label for="exampleInputPassword1" class="form-label">{{__('messages.Offer details en')}}</label>
-                                <input type="text"  name="details_en" class="form-control" id="exampleInputPassword1">
+                                <input type="text"  name="details_en"  value="{{$offer-> details_en}}" class="form-control" id="exampleInputPassword1">
                                 @error('details_en')
                                 <small class="from-text text-danger">{{$message}}</small>
                                 @enderror

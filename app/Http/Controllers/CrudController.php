@@ -4,34 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OfferRequest;
 use App\Models\Offer;
+
 //use Dotenv\Validator;
+use App\Traits\OfferTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-
 class CrudController extends Controller
 {
+    use  OfferTrait;
+
     public function __construct()
     {
     }
-    public  function getoffer(){
-      return    Offer::get();
+
+    public function getoffer()
+    {
+        return Offer::get();
     }
 
-
-
-    public  function  create (){
+    public function create()
+    {
         return view('ofers.create');
     }
-
-
-
-
-
-
-
-
 //    public  function store( Request $re){
 //        //           rules of input
 //        $rules=[
@@ -63,34 +59,63 @@ class CrudController extends Controller
 //    ];
 //    }
 
-    public  function store(OfferRequest $re){
+    public function store(OfferRequest $re)
+    {
 //        dd($re->all());
+//        $file_extension = $re->photo->getClientOriginalExtension();
+//        $file_name = time() . '.' . $file_extension;
+//        $path = 'images/offers';
+//        $re->photo->move($path, $file_name);
+        $file_name = $this->saveImage($re->photo, 'images/offers');
         Offer::create([
-            'name_ar'=> $re->name_ar,
-            'name_en'=> $re->name_en,
-            'price'=> $re->price,
-            'details_ar'=> $re->details_ar,
-            'details_en'=> $re->details_en,
-
+            'name_ar' => $re->name_ar,
+            'name_en' => $re->name_en,
+            'price' => $re->price,
+            'details_ar' => $re->details_ar,
+            'details_en' => $re->details_en,
+            'photo' => $file_name,
         ]);
         return redirect()->back()->with(['success' => 'good saved']);
     }
 
+    public function getAllOffers()
+    {
+        $offers = Offer::select('id', 'price',
+            'name_' . LaravelLocalization::getCurrentLocale() . ' as name',
+            'details_' . LaravelLocalization::getCurrentLocale() . ' as details',
+        )->get();
+
+        return view('ofers.all', compact('offers'));
+    }
 
 
-public  function getAllOffers(){
-  $offers =  Offer::select('id' , 'price',
-      'name_'.LaravelLocalization::getCurrentLocale() . ' as name',
-      'details_'.LaravelLocalization::getCurrentLocale() . ' as details',
-  )->get();
+    public function editOffer($offer_id)
+    {
+        // Offer::findOrFail($offer_id);
+        $offer = Offer::find($offer_id);  // search in given table id only
+        //علمود الحمايه
+        if (!$offer)
+            return redirect()->back();
+        $offer = Offer::select('id', 'name_ar', 'name_en', 'details_ar', 'details_en', 'price')->find($offer_id);
+        return view('ofers.edit', compact('offer'));
+    }
 
-
-  return view( 'ofers.all' , compact( 'offers'));
-
-
-
-}
-
+    public function UpdateOffer(OfferRequest $request, $offer_id)
+    {
+        //validtion
+        // chek if offer exists
+        $offer = Offer::find($offer_id);
+        if (!$offer)
+            return redirect()->back();
+        //update data
+        $offer->update($request->all());
+        return redirect()->back()->with(['success' => ' تم التحديث بنجاح ']);
+        /*  $offer->update([
+              'name_ar' => $request->name_ar,
+              'name_en' => $request->name_en,
+              'price' => $request->price,
+          ]);*/
+    }
 
 
 }
