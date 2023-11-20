@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\videoViewer;
 use App\Http\Requests\OfferRequest;
 use App\Models\Offer;
 
 //use Dotenv\Validator;
+use App\Models\video;
 use App\Traits\OfferTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -116,6 +118,14 @@ class CrudController extends Controller
               'price' => $request->price,
           ]);*/
     }
+
+    public function getVideo(){
+
+       $video =  video::first();
+event(new videoViewer($video));
+        return view('video')->with('video' , $video);
+    }
+
 
 
 }

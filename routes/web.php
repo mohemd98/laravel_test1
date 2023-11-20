@@ -52,4 +52,7 @@ Route::group(['prefix' => \Mcamara\LaravelLocalization\Facades\LaravelLocalizati
 
     });
 
+    Route::get('youtube', 'App\Http\Controllers\CrudController@getVideo') ;
+
+
 });
