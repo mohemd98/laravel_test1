@@ -1,52 +1,15 @@
-{{--@extends('layouts.app')--}}
-
-{{--@section('content')--}}
-{{--    <div class="container">--}}
-{{--        <div class="row justify-content-center">--}}
-{{--            <div class="col-md-8">--}}
-{{--                --}}
-{{--                <nav class="navbar navbar-expand-lg bg-body-tertiary">--}}
-{{--                    <div class="container-fluid">--}}
-{{--                        <a class="navbar-brand" href="#">Navbar</a>--}}
-{{--                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">--}}
-{{--                            <span class="navbar-toggler-icon"></span>--}}
-{{--                        </button>--}}
-{{--                        <div class="collapse navbar-collapse" id="navbarSupportedContent">--}}
-{{--                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">--}}
-{{--                                @foreach(\Mcamara\LaravelLocalization\Facades\LaravelLocalization::getSupportedLocales() as $localCode => $properties)--}}
-{{--                                    <li class="nav-item">--}}
-{{--                                        <a class="nav-link active" aria-current="page" href="{{\Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedUrl($localCode , null , [] , true)}}">{{$properties['native']}}</a>--}}
-{{--                                    </li>--}}
-{{--                                @endforeach--}}
-
-{{--                            </ul>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </nav>--}}
-{{--                --}}
-{{--                <div class="card">--}}
-{{--                    <div class="card-header">{{ trans('messages.Dash') }}</div>--}}
-
-{{--                    <div class="card-body">--}}
-{{--                        @if(Session::has('success'))--}}
-{{--                            <div class="alert alert-primary" role="alert">--}}
-{{--                                {{ Session::get('success') }}--}}
-{{--                            </div>--}}
-{{--                        @endif--}}
-{{--                     --}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--@endsection--}}
 
 
 @extends('layouts.app')
 
 @section('content')
     <div class="container">
-        <form method="POST" action="" enctype="multipart/form-data">
+
+        <div class="alert alert-success" id="success_msg" style="display: none;">
+            تم الحفظ بنجاح
+        </div>
+
+        <form method="POST" id="offerForm" action="" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-3">
@@ -110,27 +73,37 @@
 @section('scripts')
 
     <script>
-        $(document).ready(function () {
-            console.log('jQuery is working!');
-        });
-    </script>
-
-    <script>
         $(document).on('click', '#save_offer', function (e) {
             e.preventDefault();
+
+            // $('#photo_error').text('');
+            // $('#name_ar_error').text('');
+            // $('#name_en_error').text('');
+            // $('#price_error').text('');
+            // $('#details_ar_error').text('');
+            // $('#details_en_error').text('');
+
+            var formData = new FormData($('#offerForm')[0]);
+
             $.ajax({
                 type: 'POST',
                 url: "{{route('ajax.offers.store')}}",
-                data: {
-                    '_token': "{{csrf_token()}}",
-                    'name_ar': $("input[name='name_ar']").val(),
-                    'name_en': $("input[name='name_en']").val(),
-                    'price': $("input[name='price']").val(),
-                    'details_ar': $("input[name='details_ar']").val(),
-                    'details_en': $("input[name='details_en']").val(),
-                },
+                {{--data: {--}}
+                    {{--    '_token': "{{csrf_token()}}",--}}
+                    {{--    'name_ar': $("input[name='name_ar']").val(),--}}
+                    {{--    'name_en': $("input[name='name_en']").val(),--}}
+                    {{--    'price': $("input[name='price']").val(),--}}
+                    {{--    'details_ar': $("input[name='details_ar']").val(),--}}
+                    {{--    'details_en': $("input[name='details_en']").val(),--}}
+                    {{--},--}}
+                data: formData,
+                processData: false,
+                contentType: false,
+                cache: false,
                 success: function (data) {
-                    console.log('Success:', data);
+                    if (data.status == true) {
+                        $('#success_msg').show();
+                    }
                 },
                 error: function (xhr, status, error) {
                     console.log('Error:', xhr.responseText);
