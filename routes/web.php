@@ -18,7 +18,10 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::get('/dashboard', function () {
 
+    return 'Not adualt';
+}) -> name('not.adult');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes(['verify' => true]);
@@ -51,7 +54,7 @@ Route::group(['prefix' => \Mcamara\LaravelLocalization\Facades\LaravelLocalizati
 
     });
 
-    Route::get('youtube', 'App\Http\Controllers\CrudController@getVideo') ;
+    Route::get('youtube', 'App\Http\Controllers\CrudController@getVideo');
 
 
 });
@@ -67,3 +70,20 @@ Route::group(['prefix' => 'ajax-offers'], function () {
     Route::post('update', 'App\Http\Controllers\OfferController@Update')->name('ajax.offers.update');
 });
 ###################### End Ajax routes #####################
+
+##################### Begin Authentication && Guards ##############
+
+
+
+Route::group(['middleware' => 'CheckAge', 'namespace' => 'App\Http\Controllers\Auth'], function () {
+    Route::get('adults', 'CustomAuthController@adualt')->name('adult')->middleware('auth');
+});
+//middleware('auth')
+Route::get('site', 'App\Http\Controllers\Auth\CustomAuthController@site')->middleware('auth:web')->name('site');
+Route::get('admin', 'App\Http\Controllers\Auth\CustomAuthController@admin')->middleware('auth:admin')->name('admin');
+
+Route::get('admin/login', 'App\Http\Controllers\Auth\CustomAuthController@adminLogin')->name('admin.login');
+Route::post('admin/login', 'App\Http\Controllers\Auth\CustomAuthController@checkAdminLogin')->name('save.admin.login');
+
+
+##################### End Authentication && Guards ##############
