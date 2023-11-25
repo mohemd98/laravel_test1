@@ -54,7 +54,7 @@ Route::group(['prefix' => \Mcamara\LaravelLocalization\Facades\LaravelLocalizati
 
     });
 
-    Route::get('youtube', 'App\Http\Controllers\CrudController@getVideo');
+    Route::get('youtube', 'App\Http\Controllers\CrudController@getVideo')->middleware('auth');
 
 
 });
@@ -87,3 +87,19 @@ Route::post('admin/login', 'App\Http\Controllers\Auth\CustomAuthController@check
 
 
 ##################### End Authentication && Guards ##############
+
+################### Begin relations  routes ######################
+
+Route::get('has-one','App\Http\Controllers\Relation\RelationsController@hasOneRelation');
+
+//Route::get('has-one-reserve','App\Http\Controllers\Relation\RelationsController@hasOneRelationReverse');
+//
+//Route::get('get-user-has-phone','App\Http\Controllers\Relation\RelationsController@getUserHasPhone');
+//
+//Route::get('get-user-has-phone-with-condition','App\Http\Controllers\Relation\RelationsController@getUserWhereHasPhoneWithCondition');
+//
+//Route::get('get-user-not-has-phone','App\Http\Controllers\Relation\RelationsController@getUserNotHasPhone');
+
+
+################### End relations  routes ########################
+
