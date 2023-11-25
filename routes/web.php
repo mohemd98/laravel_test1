@@ -21,7 +21,7 @@ Auth::routes();
 Route::get('/dashboard', function () {
 
     return 'Not adualt';
-}) -> name('not.adult');
+})->name('not.adult');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes(['verify' => true]);
@@ -74,7 +74,6 @@ Route::group(['prefix' => 'ajax-offers'], function () {
 ##################### Begin Authentication && Guards ##############
 
 
-
 Route::group(['middleware' => 'CheckAge', 'namespace' => 'App\Http\Controllers\Auth'], function () {
     Route::get('adults', 'CustomAuthController@adualt')->name('adult')->middleware('auth');
 });
@@ -90,15 +89,33 @@ Route::post('admin/login', 'App\Http\Controllers\Auth\CustomAuthController@check
 
 ################### Begin relations  routes ######################
 
-Route::get('has-one','App\Http\Controllers\Relation\RelationsController@hasOneRelation');
+Route::get('has-one', 'App\Http\Controllers\Relation\RelationsController@hasOneRelation');
 
-//Route::get('has-one-reserve','App\Http\Controllers\Relation\RelationsController@hasOneRelationReverse');
+Route::get('has-one-reserve', 'App\Http\Controllers\Relation\RelationsController@hasOneRelationReverse');
 //
-//Route::get('get-user-has-phone','App\Http\Controllers\Relation\RelationsController@getUserHasPhone');
+Route::get('get-user-has-phone', 'App\Http\Controllers\Relation\RelationsController@getUserHasPhone');
 //
-//Route::get('get-user-has-phone-with-condition','App\Http\Controllers\Relation\RelationsController@getUserWhereHasPhoneWithCondition');
+Route::get('get-user-has-phone-with-condition', 'App\Http\Controllers\Relation\RelationsController@getUserWhereHasPhoneWithCondition');
 //
-//Route::get('get-user-not-has-phone','App\Http\Controllers\Relation\RelationsController@getUserNotHasPhone');
+Route::get('get-user-not-has-phone', 'App\Http\Controllers\Relation\RelationsController@getUserNotHasPhone');
+
+################## Begin one To many Relationship #####################
+Route::get('hospital-has-many', 'App\Http\Controllers\Relation\RelationsController@getHospitalDoctors');
+
+Route::get('hospitals', 'App\Http\Controllers\Relation\RelationsController@hospitals')->name('hospital.all');
+
+Route::get('doctors/{hospital_id}', 'App\Http\Controllers\Relation\RelationsController@doctors')->name('hospital.doctors');
+
+Route::get('hospitals/{hospital_id}','App\Http\Controllers\Relation\RelationsController@deleteHospital') -> name('hospital.delete');
+
+Route::get('hospitals_has_doctors','App\Http\Controllers\Relation\RelationsController@hospitalsHasDoctor');
+
+Route::get('hospitals_has_doctors_male','App\Http\Controllers\Relation\RelationsController@hospitalsHasOnlyMaleDoctors');
+
+Route::get('hospitals_not_has_doctors','App\Http\Controllers\Relation\RelationsController@hospitals_not_has_doctors');
+
+
+################## End one To many Relationship #####################
 
 
 ################### End relations  routes ########################
