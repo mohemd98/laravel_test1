@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Relation;
 
 use App\Http\Controllers\Controller;
+use App\Models\Country;
 use App\Models\Doctor;
 use App\Models\Hospital;
+use App\Models\Patient;
 use App\Models\Phone;
 use App\Models\service;
 use Illuminate\Http\Request;
@@ -172,19 +174,19 @@ class RelationsController extends Controller
         return 'success';
     }
 
-//    public function getPatientDoctor()
-//    {
-//        $patient = Patient::find(2);
-//        return $patient->doctor;
-//    }
-//
-//    public function getCountryDoctor()
-//    {
-//        $country = Country::find(1);
-//        return $country->doctors;
-//    }
-//
-//
+    public function getPatientDoctor()
+    {
+        $patient = Patient::find(2);
+        return $patient->doctor;
+    }
+
+    public function getCountryDoctor()
+    {
+        $country = Country::find(1);
+        return $country->doctors;
+    }
+
+
 //    public function getDoctors()
 //    {
 //        return $doctors = Doctor::select('id', 'name', 'gender')->get();
