@@ -1,5 +1,3 @@
-
-
 @extends('layouts.app')
 
 @section('content')
@@ -16,9 +14,7 @@
                 <label for="exampleInputEmail1" class="form-label">اختر الصوره</label>
                 <input type="file" name="photo" class="form-control" id="exampleInputEmail1"
                        aria-describedby="emailHelp">
-                @error('photo')
-                <small class="from-text text-danger">{{$message}}</small>
-                @enderror
+                <small id="photo_error" class="form-text text-danger"></small>
             </div>
 
 
@@ -27,9 +23,7 @@
                 <input type="text" name="name_ar" class="form-control" id="exampleInputEmail1"
                        aria-describedby="emailHelp">
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                @error('name_ar')
-                <small class="from-text text-danger">{{$message}}</small>
-                @enderror
+                <small id="name_ar_error" class="form-text text-danger"></small>
             </div>
 
             <div class="mb-3">
@@ -37,32 +31,25 @@
                 <input type="text" name="name_en" class="form-control" id="exampleInputEmail1"
                        aria-describedby="emailHelp">
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                @error('name_en')
-                <small class="from-text text-danger">{{$message}}</small>
-                @enderror
+                <small id="name_en_error" class="form-text text-danger"></small>
             </div>
 
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">{{__('messages.Offer Price')}}</label>
                 <input type="text" name="price" class="form-control" id="exampleInputPassword1">
-                @error('price')
-                <small class="from-text text-danger"> {{$message}} </small>
-                @enderror                            </div>
+                <small id="price_error" class="form-text text-danger"></small>
+            </div>
 
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">{{__('messages.Offer details ar')}}</label>
                 <input type="text" name="details_ar" class="form-control" id="exampleInputPassword1">
-                @error('details_ar')
-                <small class="from-text text-danger">{{$message}}</small>
-                @enderror
+                <small id="details_ar_error" class="form-text text-danger"></small>
             </div>
 
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">{{__('messages.Offer details en')}}</label>
                 <input type="text" name="details_en" class="form-control" id="exampleInputPassword1">
-                @error('details_en')
-                <small class="from-text text-danger">{{$message}}</small>
-                @enderror
+                <small id="details_en_error" class="form-text text-danger"></small>
             </div>
 
             <button id="save_offer" class="btn btn-primary">{{__('messages.Save Offer')}}</button>
@@ -76,12 +63,12 @@
         $(document).on('click', '#save_offer', function (e) {
             e.preventDefault();
 
-            // $('#photo_error').text('');
-            // $('#name_ar_error').text('');
-            // $('#name_en_error').text('');
-            // $('#price_error').text('');
-            // $('#details_ar_error').text('');
-            // $('#details_en_error').text('');
+            $('#photo_error').text('');
+            $('#name_ar_error').text('');
+            $('#name_en_error').text('');
+            $('#price_error').text('');
+            $('#details_ar_error').text('');
+            $('#details_en_error').text('');
 
             var formData = new FormData($('#offerForm')[0]);
 
@@ -105,8 +92,11 @@
                         $('#success_msg').show();
                     }
                 },
-                error: function (xhr, status, error) {
-                    console.log('Error:', xhr.responseText);
+                error: function (reject) {
+                    var response = $.parseJSON(reject.responseText);
+                    $.each(response.errors, function (key, val) {
+                        $("#" + key + "_error").text(val[0]);
+                    });
                 },
             });
         });

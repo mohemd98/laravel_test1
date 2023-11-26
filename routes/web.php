@@ -115,8 +115,36 @@ Route::get('hospitals_has_doctors_male','App\Http\Controllers\Relation\Relations
 Route::get('hospitals_not_has_doctors','App\Http\Controllers\Relation\RelationsController@hospitals_not_has_doctors');
 
 
-################## End one To many Relationship #####################
+################### End one To many Relationship #####################
+
+
+################## Begin  Many To many Relationship #####################
+
+Route::get('doctors-services','App\Http\Controllers\Relation\RelationsController@getDoctorServices');
+
+Route::get('service-doctors','App\Http\Controllers\Relation\RelationsController@getServiceDoctors');
+
+
+Route::get('doctors/services/{doctor_id}','App\Http\Controllers\Relation\RelationsController@getDoctorServicesById')-> name('doctors.services');
+Route::post('saveServices-to-doctor','App\Http\Controllers\Relation\RelationsController@saveServicesToDoctors')-> name('save.doctors.services');
+
+
+################## End Many To many Relationship #####################
+
+
+######################### has one through ##########################
+
+
+Route::get('has-one-through','App\Http\Controllers\Relation\RelationsController@getPatientDoctor');
+
+Route::get('has-many-through','App\Http\Controllers\Relation\RelationsController@getCountryDoctor');
 
 
 ################### End relations  routes ########################
 
+
+#######################  Begin accessors and mutators ###################
+
+Route::get('accessors','App\Http\Controllers\Relation\RelationsController@getDoctors'); //get data
+
+#######################  End accessors and mutators ###################

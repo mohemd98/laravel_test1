@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Doctor;
 use App\Models\Hospital;
 use App\Models\Phone;
+use App\Models\service;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -102,75 +103,75 @@ class RelationsController extends Controller
     }
 
 
-//    // get all hospital which must has doctors
-//    public function hospitalsHasDoctor()
-//    {
-//        return $hospitals = Hospital::whereHas('doctors')->get();
-//    }
-//
-//    public function hospitalsHasOnlyMaleDoctors()
-//    {
-//        return $hospitals = Hospital::with('doctors')->whereHas('doctors', function ($q) {
-//            $q->where('gender', 1);
-//        })->get();
-//    }
-//
-//
-//    public function hospitals_not_has_doctors()
-//    {
-//
-//        return Hospital::whereDoesntHave('doctors')->get();
-//    }
-//
-//    public function deleteHospital($hospital_id)
-//    {
-//        $hospital = Hospital::find($hospital_id);
-//        if (!$hospital)
-//            return abort('404');
-//        //delete doctors in this hospital
-//        $hospital->doctors()->delete();
-//        $hospital->delete();
-//
-//        //return redirect() -> route('hospital.all');
-//    }
-//
-//    public function getDoctorServices()
-//    {
-//        return $doctor = Doctor::with('services')->find(3);
-//        //  return $doctor -> services;
-//    }
-//
-//    public function getServiceDoctors()
-//    {
-//        return $doctors = Service::with(['doctors' => function ($q) {
-//            $q->select('doctors.id', 'name', 'title');
-//        }])->find(1);
-//    }
-//
-//    public function getDoctorServicesById($doctorId)
-//    {
-//        $doctor = Doctor::find($doctorId);
-//        $services = $doctor->services;  //doctor services
-//
-//        $doctors = Doctor::select('id', 'name')->get();
-//        $allServices = Service::select('id', 'name')->get(); // all db serves
-//
-//        return view('doctors.services', compact('services', 'doctors', 'allServices'));
-//    }
-//
-//
-//    public function saveServicesToDoctors(Request $request)
-//    {
-//
-//        $doctor = Doctor::find($request->doctor_id);
-//        if (!$doctor)
-//            return abort('404');
-//        // $doctor ->services()-> attach($request -> servicesIds);  // many to many insert to database
-//        //$doctor ->services()-> sync($request -> servicesIds);
-//        $doctor->services()->syncWithoutDetaching($request->servicesIds);
-//        return 'success';
-//    }
-//
+    // get all hospital which must has doctors
+    public function hospitalsHasDoctor()
+    {
+        return $hospitals = Hospital::whereHas('doctors')->get();
+    }
+
+    public function hospitalsHasOnlyMaleDoctors()
+    {
+        return $hospitals = Hospital::with('doctors')->whereHas('doctors', function ($q) {
+            $q->where('gender', 1);
+        })->get();
+    }
+
+
+    public function hospitals_not_has_doctors()
+    {
+
+        return Hospital::whereDoesntHave('doctors')->get();
+    }
+
+    public function deleteHospital($hospital_id)
+    {
+        $hospital = Hospital::find($hospital_id);
+        if (!$hospital)
+            return abort('404');
+        //delete doctors in this hospital
+        $hospital->doctors()->delete();
+        $hospital->delete();
+
+        //return redirect() -> route('hospital.all');
+    }
+
+    public function getDoctorServices()
+    {
+        return $doctor = Doctor::with('services')->find(3);
+        //  return $doctor -> services;
+    }
+
+    public function getServiceDoctors()
+    {
+        return $doctors = service::with(['doctors' => function ($q) {
+            $q->select('doctors.id', 'name', 'title');
+        }])->find(1);
+    }
+
+    public function getDoctorServicesById($doctorId)
+    {
+        $doctor = Doctor::find($doctorId);
+        $services = $doctor->services;  //doctor services
+
+        $doctors = Doctor::select('id', 'name')->get();
+        $allServices = Service::select('id', 'name')->get(); // all db serves
+
+        return view('doctors.services', compact('services', 'doctors', 'allServices'));
+    }
+
+
+    public function saveServicesToDoctors(Request $request)
+    {
+
+        $doctor = Doctor::find($request->doctor_id);
+        if (!$doctor)
+            return abort('404');
+        // $doctor ->services()-> attach($request -> servicesIds);  // many to many insert to database
+        //$doctor ->services()-> sync($request -> servicesIds);
+        $doctor->services()->syncWithoutDetaching($request->servicesIds);
+        return 'success';
+    }
+
 //    public function getPatientDoctor()
 //    {
 //        $patient = Patient::find(2);

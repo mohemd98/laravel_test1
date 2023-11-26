@@ -30,7 +30,7 @@
                         <td>{!!  $hospital -> address !!}</td>
                         <td>
                             <a href="{{route('hospital.doctors',$hospital -> id)}}" class="btn btn-success"> عرض الاطباء</a>
-{{--                            <a href="{{route('hospital.delete',$hospital -> id)}}" class="btn btn-danger">حذف</a>--}}
+                            <a href="{{route('hospital.delete',$hospital -> id)}}" class="btn btn-danger">حذف</a>
                         </td>
                     </tr>
                 @endforeach
