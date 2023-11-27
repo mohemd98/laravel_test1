@@ -8,6 +8,7 @@ use App\Models\Offer;
 
 //use Dotenv\Validator;
 use App\Models\video;
+use App\Scopes\OfferScope;
 use App\Traits\OfferTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -82,12 +83,21 @@ class CrudController extends Controller
 
     public function getAllOffers()
     {
-        $offers = Offer::select('id', 'price',
-            'name_' . LaravelLocalization::getCurrentLocale() . ' as name',
-            'details_' . LaravelLocalization::getCurrentLocale() . ' as details',
-        )->get();
+//        $offers = Offer::select('id', 'price',
+//            'name_' . LaravelLocalization::getCurrentLocale() . ' as name',
+//            'details_' . LaravelLocalization::getCurrentLocale() . ' as details',
+//        )->get();
+//
+//        return view('ofers.all', compact('offers'));
 
-        return view('ofers.all', compact('offers'));
+        ##################### paginate result ####################
+        $offers = Offer::select('id',
+            'price',
+            'photo',
+            'name_' . LaravelLocalization::getCurrentLocale() . ' as name',
+            'details_' . LaravelLocalization::getCurrentLocale() . ' as details'
+        )->paginate(PAGINATION_COUNT);
+        return view('ofers.paginations',compact('offers'));
     }
 
 
@@ -119,11 +129,12 @@ class CrudController extends Controller
           ]);*/
     }
 
-    public function getVideo(){
+    public function getVideo()
+    {
 
-       $video =  video::first();
-event(new videoViewer($video));
-        return view('video')->with('video' , $video);
+        $video = video::first();
+        event(new videoViewer($video));
+        return view('video')->with('video', $video);
     }
 
     public function delete($offer_id)
@@ -140,6 +151,23 @@ event(new videoViewer($video));
         return redirect()
             ->route('offers.all')
             ->with(['success' => __('messages.offer deleted successfully')]);
+
+    }
+
+    public function getAllInactiveOffers(){
+
+        // where  whereNull whereNotNull whereIn
+        //Offer::whereNotNull('details_ar') -> get();
+
+        //return  $inactiveOffers = Offer::inactive()->get();  //all inactive offers
+
+        // global scope
+        // return  $inactiveOffers = Offer::get();  //all inactive offers
+
+        // how to  remove global scope
+
+        return $offer  = Offer::withoutGlobalScope(OfferScope::class)->get();
+
 
     }
 
